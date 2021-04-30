@@ -1,0 +1,30 @@
+// This #include statement was automatically added by the Particle IDE.
+#include <Adafruit_DHT.h>
+
+// Initial Setup for DHT11 sensor needing the two types:
+#define DHTPIN 	D5     // set pin
+#define DHTTYPE DHT11		// DHT 11 
+
+// Setting up the parameters needed for the DHT library
+DHT dht(DHTPIN, DHTTYPE);
+
+// Setting up the functions that are to be run once starting up the program
+void setup() {
+  Serial.begin(9600);
+  dht.begin();
+}
+
+// The loop is where the program will repeatedly run the program until stopping it manually.
+void loop() {
+  //Read Humidity
+  float h = dht.getHumidity();
+ 
+  // making the float number recieved into a string.
+  String humid = String(h);
+  
+  // Publishing the humid numbers into the humid event. Which gets sent to the Private Channel we set it up for.
+  Particle.publish("humid", humid + "%", PRIVATE);
+  
+  //Loop doesn't start for another 10 seconds
+  delay(10000);
+}
